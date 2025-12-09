@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drak Red - Bug Console</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <div class="container loading-screen" style="display: none;">
+        <div class="loading-animation">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="loading-text">Memproses Login...</div>
+    </div>
+
+    <div class="container login-screen"> 
+        <div class="header-section">
+            <div class="powered-by">Powered by @dilzz</div>
+            <div class="logo">
+                <img class="logo-image" 
+                     src="A.jpg" 
+                     alt="Logo Drak Red">
+                <div class="logo-text">Drak Red</div>
+            </div>
+            <div class="powered-by bottom-powered">Input username and password.</div>
+        </div>
+
+        <div class="form-section login-form">
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button class="login-button">LOGIN</button>
+            <div id="error-message" style="color: var(--primary-color); text-align: center; margin-top: 10px; display: none;">Username atau Password salah.</div>
+        </div>
+
+        <div class="powered-by footer-powered">Powered by @dilzz</div>
+    </div>
+
+    <div class="container main-screen" style="display: none;">
+        <div class="main-content">
+            <div class="account-info">
+                <div class="profile-image">
+                    <img src="11.jpg" alt="Profile Image" class="profile-image-src">
+                </div>
+                <div class="info-details">
+                    <div class="status-badge">DRAK RED</div>
+                    <div class="role-exp">Role: PENGGUNA • Exp: 3000-12-12</div>
+                </div>
+            </div>
+
+            <div class="target-form">
+                <div class="input-group">
+                    <label for="target-number">TARGET NUMBER</label>
+                    <input type="text" id="target-number" placeholder="Target 628xxx">
+                </div>
+
+                <div class="input-group">
+                    <label for="select-bug">SELECT BUG</label>
+                    <select id="select-bug">
+                        <option value="Force close">Force close</option>
+                        <option value="Crash andro">Crash andro</option>
+                        <option value="Crash ios">Crash ios</option>
+                        <option value="Delay invisible">Delay invisible</option>
+                    </select>
+                </div>
+                
+                <button class="send-bug-button">SEND BUG</button>
+            </div>
+            
+            <div class="powered-by footer-powered">Powered by @dilzz</div>
+        </div>
+    </div>
+    
+    <div id="bug-modal" class="bug-success-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">😈 Drak Red Success!</div>
+            <div class="modal-body" id="modal-text"></div>
+            <button class="modal-close-button" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // FUNGSI TUTUP MODAL
+        function closeModal() {
+            document.getElementById('bug-modal').style.display = 'none';
+        }
+
+        // FUNGSI LOGIN (usn: drak, pw: red)
+        document.querySelector('.login-button').addEventListener('click', function() {
+            const usernameInput = document.getElementById('username').value;
+            const passwordInput = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+            
+            const loginScreen = document.querySelector('.login-screen');
+            const loadingScreen = document.querySelector('.loading-screen');
+            const mainScreen = document.querySelector('.main-screen');
+
+            if (usernameInput === 'drak' && passwordInput === 'red') {
+                errorMessage.style.display = 'none';
+
+                // 1. Tampilkan loading screen
+                loginScreen.style.display = 'none';
+                loadingScreen.style.display = 'flex'; 
+
+                // 2. Tunggu 3 detik (simulasi loading)
+                setTimeout(() => {
+                    // 3. Setelah selesai, sembunyikan loading dan tampilkan main screen
+                    loadingScreen.style.display = 'none';
+                    mainScreen.style.display = 'flex'; 
+                }, 3000); 
+
+            } else {
+                errorMessage.style.display = 'block';
+            }
+        });
+
+        // FUNGSI SEND BUG (Tanpa validasi nomor, tapi dengan notifikasi loading)
+        document.querySelector('.send-bug-button').addEventListener('click', function() {
+            const targetNumberInput = document.getElementById('target-number');
+            let targetNumber = targetNumberInput.value.trim();
+            const selectElement = document.getElementById('select-bug');
+            const selectedBug = selectElement.options[selectElement.selectedIndex].text; 
+              
+            const loadingScreen = document.querySelector('.loading-screen');
+            const mainScreen = document.querySelector('.main-screen');
+            const modal = document.getElementById('bug-modal');
+            const modalText = document.getElementById('modal-text');
+
+            // Tentukan tampilan target: gunakan 'nomor target' jika kosong
+            let targetDisplay = targetNumber === '' ? 'nomor target' : targetNumber;
+
+
+            // 1. Tampilkan loading screen sebagai notifikasi "Kirim Bug"
+            mainScreen.style.display = 'none';
+            loadingScreen.style.display = 'flex';
+            document.querySelector('.loading-text').textContent = 'Mengirim Bug...';
+
+            // 2. Set timeout untuk simulasi proses pengiriman (1 detik)
+            setTimeout(() => {
+                
+                // 3. Sembunyikan loading dan tampilkan kembali main screen
+                loadingScreen.style.display = 'none';
+                mainScreen.style.display = 'flex'; 
+                document.querySelector('.loading-text').textContent = 'Memproses Login...'; // Kembalikan teks loading
+
+                // 4. Tampilkan modal sukses tanpa memeriksa validasi
+                modalText.innerHTML = `
+                    💥 **BUG BERHASIL DI
